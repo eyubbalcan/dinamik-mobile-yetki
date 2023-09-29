@@ -8,8 +8,6 @@ import {
   CONFIRMATION_MODAL_CLOSE_TYPES,
   MODAL_BODY_TYPES,
 } from "../../utils/globalConstantUtil";
-// import TrashIcon from "@heroicons/react/24/outline/TrashIcon";
-// import { showNotification } from "../common/headerSlice";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -49,7 +47,7 @@ function Leads() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://192.168.1.40:5143/api/AuthUser");
+      const response = await axios.get("http://192.168.1.25:2780/api/AuthUser");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -118,6 +116,7 @@ function Leads() {
               })}
             </tbody>
           </table>
+          <Link to="/auth123">Tıklayınız</Link>
         </div>
       </TitleCard>
     </>

@@ -33,7 +33,7 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
 
   const handleAddPerson = () => {
     axios
-      .post("http://192.168.1.40:5143/api/AuthUser", newUser)
+      .post("http://192.168.1.25:2780/api/AuthUser", newUser)
       .then((response) => {
         if (response.data.Status) {
           console.log("kaydedildi");
