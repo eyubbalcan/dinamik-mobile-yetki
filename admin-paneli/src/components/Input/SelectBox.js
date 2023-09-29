@@ -1,6 +1,4 @@
-import axios from "axios";
-import capitalize from "capitalize-the-first-letter";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import InformationCircleIcon from "@heroicons/react/24/outline/InformationCircleIcon";
 
 function SelectBox(props) {
@@ -46,7 +44,7 @@ function SelectBox(props) {
         </option>
         {options.map((o, k) => {
           return (
-            <option value={o.dep_no || o.dep_adi} key={k}>
+            <option value={o.value} key={k}>
               {o.name}
             </option>
           );

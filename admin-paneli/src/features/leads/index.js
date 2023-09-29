@@ -1,13 +1,9 @@
-import moment from "moment";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import TitleCard from "../../components/Cards/TitleCard";
 import { openModal } from "../common/modalSlice";
-import { deleteLead, getLeadsContent } from "./leadSlice";
-import {
-  CONFIRMATION_MODAL_CLOSE_TYPES,
-  MODAL_BODY_TYPES,
-} from "../../utils/globalConstantUtil";
+import { getLeadsContent } from "./leadSlice";
+import { MODAL_BODY_TYPES } from "../../utils/globalConstantUtil";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -36,7 +32,6 @@ const TopSideButtons = () => {
 };
 
 function Leads() {
-  const { leads } = useSelector((state) => state.lead);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
@@ -47,37 +42,12 @@ function Leads() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://192.168.1.25:2780/api/AuthUser");
+      const response = await axios.get("http://192.168.1.40:5143/api/AuthUser");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
-//   const getDummyStatus = (index) => {
-//     if (index % 5 === 0) return <div className="badge">Not Interested</div>;
-//     else if (index % 5 === 1)
-//       return <div className="badge badge-primary">In Progress</div>;
-//     else if (index % 5 === 2)
-//       return <div className="badge badge-secondary">Sold</div>;
-//     else if (index % 5 === 3)
-//       return <div className="badge badge-accent">Need Followup</div>;
-//     else return <div className="badge badge-ghost">Open</div>;
-//   };
-
-//   const deleteCurrentLead = (index) => {
-//     dispatch(
-//       openModal({
-//         title: "Confirmation",
-//         bodyType: MODAL_BODY_TYPES.CONFIRMATION,
-//         extraObject: {
-//           message: `Are you sure you want to delete this lead?`,
-//           type: CONFIRMATION_MODAL_CLOSE_TYPES.LEAD_DELETE,
-//           index,
-//         },
-//       })
-//     );
-//   };
 
   return (
     <>
@@ -105,7 +75,7 @@ function Leads() {
                     </td>
                     <td>{l.isActive}</td>
                     <td>
-                      <Link to="/yetki">
+                      <Link to="/app/auth123">
                         <button className="btn px-6 btn-sm normal-case btn-primary">
                           Düzenle
                         </button>
@@ -116,7 +86,6 @@ function Leads() {
               })}
             </tbody>
           </table>
-          <Link to="/auth123">Tıklayınız</Link>
         </div>
       </TitleCard>
     </>

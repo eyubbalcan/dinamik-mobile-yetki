@@ -26,14 +26,12 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
   const [depolar, setDepolar] = useState([]);
   const [selectedDepo, setSelectedDepo] = useState(0);
 
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [leadObj, setLeadObj] = useState(INITIAL_LEAD_OBJ);
 
   const handleAddPerson = () => {
     axios
-      .post("http://192.168.1.25:2780/api/AuthUser", newUser)
+      .post("http://192.168.1.40:5143/api/AuthUser", newUser)
       .then((response) => {
         if (response.data.Status) {
           console.log("kaydedildi");
@@ -63,8 +61,11 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
       const depolarResponse = await axios.get(
         "http://192.168.1.40:5143/api/Depo"
       );
-      console.log(depolarResponse.data);
-      setDepolar(depolarResponse.data);
+      const temp = depolarResponse.data.map((x) => ({
+        value: x.dep_no,
+        name: x.dep_adi,
+      }));
+      setDepolar(temp);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -93,29 +94,16 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
         labelTitle="Şifreniz"
         updateFormValue={updateFormValue}
       />
-      <div>
-        <br />
-        <p>Aktiflik</p>
-        <CheckBox
-          options={true}
-          labelTitle="Period"
-          placeholder="Select date range"
-          containerStyle="w-72"
-          labelStyle="hidden"
-          defaultValue="TODAY"
-          updateFormValue={updateFormValue}
-        />
-      </div>
 
       <div>
-        <p> Depo Seçin</p>
-
         <SelectBox
+          value={selectedDepo}
+          onChange={handleDepoChange}
           options={depolar}
-          labelTitle="Period"
-          placeholder="Select date range"
+          labelTitle="Depo Seçiniz"
+          placeholder="Seçiniz"
           containerStyle="w-72"
-          labelStyle="hidden"
+          labelStyle="visible"
           defaultValue="TODAY"
           updateFormValue={updateFormValue}
         />
@@ -128,8 +116,7 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
         </button>
         <button
           className="btn btn-primary px-6"
-          onClick={() => handleAddPerson()}
-        >
+          onClick={() => handleAddPerson()}>
           Kaydet
         </button>
       </div>

@@ -1,26 +1,22 @@
 import TitleCard from "../../components/Cards/TitleCard";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import Profile from "../../pages/authority/Profile";
 
 function Authority() {
   return (
     <>
-      <TitleCard
-        title="Kullanıcılar"
-        topMargin="mt-2"
-      >
+      <TitleCard title="Yetkilendirme Sayfası" topMargin="mt-2">
         <div className="overflow-x-auto w-full">
           <Tabs>
             <TabList>
-              <Tab>Title 1 asdsad </Tab>
-              <Tab>Title 2</Tab>
+              <Tab>Profil</Tab>
+              <Tab>Vergi</Tab>
             </TabList>
-
             <TabPanel>
-              <h2>Any content 1</h2>
+              <Profile />
             </TabPanel>
-            <TabPanel>
-              <h2>Any content 2</h2>
-            </TabPanel>
+            <TabPanel>Vergi modülü yüklenecek</TabPanel>
           </Tabs>
         </div>
       </TitleCard>
