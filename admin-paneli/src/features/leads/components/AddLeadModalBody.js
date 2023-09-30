@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import InputText from "../../../components/Input/InputText";
 import ErrorText from "../../../components/Typography/ErrorText";
-import { showNotification } from "../../common/headerSlice";
-import { addNewLead } from "../leadSlice";
 import SelectBox from "../../../components/Input/SelectBox";
-import CheckBox from "../../../components/Input/CheckBox";
 import axios from "axios";
 
 const INITIAL_LEAD_OBJ = {
@@ -15,6 +11,31 @@ const INITIAL_LEAD_OBJ = {
 };
 
 function AddLeadModalBody({ closeModal, user, setUser }) {
+  const [depolar, setDepolar] = useState([]);
+  const [selectedDepo, setSelectedDepo] = useState(0);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://192.168.1.40:5143/api/AuthUser");
+      setData(response.data);
+
+      const depolarResponse = await axios.get(
+        "http://192.168.1.40:5143/api/Depo"
+      );
+      const temp = depolarResponse.data.map((x) => ({
+        value: x.dep_no,
+        name: x.dep_adi,
+      }));
+      setDepolar(temp);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
   const [newUser, setNewUser] = useState({
@@ -23,8 +44,6 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
     isActive: true,
     warehouseNo: 0,
   });
-  const [depolar, setDepolar] = useState([]);
-  const [selectedDepo, setSelectedDepo] = useState(0);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [leadObj, setLeadObj] = useState(INITIAL_LEAD_OBJ);
@@ -48,27 +67,6 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
   const updateFormValue = ({ updateType, value }) => {
     setErrorMessage("");
     setLeadObj({ ...leadObj, [updateType]: value });
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://192.168.1.40:5143/api/AuthUser");
-      setData(response.data);
-
-      const depolarResponse = await axios.get(
-        "http://192.168.1.40:5143/api/Depo"
-      );
-      const temp = depolarResponse.data.map((x) => ({
-        value: x.dep_no,
-        name: x.dep_adi,
-      }));
-      setDepolar(temp);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
   };
 
   const handleDepoChange = (event) => {
@@ -116,7 +114,8 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
         </button>
         <button
           className="btn btn-primary px-6"
-          onClick={() => handleAddPerson()}>
+          onClick={() => handleAddPerson()}
+        >
           Kaydet
         </button>
       </div>

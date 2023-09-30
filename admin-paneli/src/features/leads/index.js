@@ -13,7 +13,7 @@ const TopSideButtons = () => {
   const openAddNewLeadModal = () => {
     dispatch(
       openModal({
-        title: "Add New Lead",
+        title: "Kullanıcı Ekle",
         bodyType: MODAL_BODY_TYPES.LEAD_ADD_NEW,
       })
     );
@@ -75,7 +75,7 @@ function Leads() {
                     </td>
                     <td>{l.isActive}</td>
                     <td>
-                      <Link to="/app/auth123">
+                      <Link to="/app/authority">
                         <button className="btn px-6 btn-sm normal-case btn-primary">
                           Düzenle
                         </button>

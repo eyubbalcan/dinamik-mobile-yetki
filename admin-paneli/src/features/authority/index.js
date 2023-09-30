@@ -2,6 +2,7 @@ import TitleCard from "../../components/Cards/TitleCard";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import Profile from "../../pages/authority/Profile";
+import Modul from "../../pages/authority/Modul";
 
 function Authority() {
   return (
@@ -11,12 +12,14 @@ function Authority() {
           <Tabs>
             <TabList>
               <Tab>Profil</Tab>
-              <Tab>Vergi</Tab>
+              <Tab>Modüller</Tab>
             </TabList>
             <TabPanel>
               <Profile />
             </TabPanel>
-            <TabPanel>Vergi modülü yüklenecek</TabPanel>
+            <TabPanel>
+              <Modul />
+            </TabPanel>
           </Tabs>
         </div>
       </TitleCard>

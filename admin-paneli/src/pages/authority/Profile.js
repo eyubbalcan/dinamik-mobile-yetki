@@ -3,9 +3,12 @@ import ToogleInput from "../../components/Input/ToogleInput";
 import TitleCard from "../../components/Cards/TitleCard";
 import InputText from "../../components/Input/InputText";
 import { showNotification } from "../../features/common/headerSlice";
+import SelectBox from "../../components/Input/SelectBox";
+import { useState } from "react";
 
 function Profile() {
   const dispatch = useDispatch();
+  const [dis, setDis] = useState([]);
 
   // Call API to update profile settings changes
   const updateProfile = () => {
@@ -40,20 +43,13 @@ function Profile() {
         <div className="divider"></div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <InputText
-            labelTitle="Language"
-            defaultValue="English"
-            updateFormValue={updateFormValue}
-          />
-          <InputText
-            labelTitle="Timezone"
-            defaultValue="IST"
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Sync Data"
-            defaultValue={true}
+          <SelectBox
+            options={[]}
+            labelTitle="Depo Seçiniz"
+            placeholder="Seçiniz"
+            containerStyle="w-80"
+            labelStyle="visible"
+            defaultValue="TODAY"
             updateFormValue={updateFormValue}
           />
         </div>
@@ -63,7 +59,7 @@ function Profile() {
             className="btn btn-primary float-right"
             onClick={() => updateProfile()}
           >
-            Update
+            Güncelle
           </button>
         </div>
       </TitleCard>

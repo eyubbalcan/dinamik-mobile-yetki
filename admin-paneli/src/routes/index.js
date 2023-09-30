@@ -32,7 +32,7 @@ const routes = [
     component: Leads,
   },
   {
-    path: '/auth123',
+    path: '/authority',
     component: Authority,
   },
 
