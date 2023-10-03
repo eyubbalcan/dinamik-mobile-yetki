@@ -4,15 +4,10 @@ import ErrorText from "../../../components/Typography/ErrorText";
 import SelectBox from "../../../components/Input/SelectBox";
 import axios from "axios";
 
-const INITIAL_LEAD_OBJ = {
-  first_name: "",
-  password: "",
-  email: "",
-};
-
-function AddLeadModalBody({ closeModal, user, setUser }) {
+function AddUser({ closeModal, user, setUser }) {
   const [depolar, setDepolar] = useState([]);
   const [selectedDepo, setSelectedDepo] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -20,9 +15,6 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://192.168.1.40:5143/api/AuthUser");
-      setData(response.data);
-
       const depolarResponse = await axios.get(
         "http://192.168.1.40:5143/api/Depo"
       );
@@ -36,21 +28,9 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
     }
   };
 
-  const [show, setShow] = useState(false);
-  const [data, setData] = useState([]);
-  const [newUser, setNewUser] = useState({
-    username: "",
-    password: "",
-    isActive: true,
-    warehouseNo: 0,
-  });
-
-  const [errorMessage, setErrorMessage] = useState("");
-  const [leadObj, setLeadObj] = useState(INITIAL_LEAD_OBJ);
-
   const handleAddPerson = () => {
     axios
-      .post("http://192.168.1.40:5143/api/AuthUser", newUser)
+      .post("http://192.168.1.40:5143/api/AuthUser", setUser)
       .then((response) => {
         if (response.data.Status) {
           console.log("kaydedildi");
@@ -62,37 +42,40 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
         console.error("Veri gönderme hatası:", error);
       });
 
-    setShow(false);
     fetchData();
-  };
-  const updateFormValue = ({ updateType, value }) => {
-    setErrorMessage("");
-    setLeadObj({ ...leadObj, [updateType]: value });
   };
 
   const handleDepoChange = (event) => {
     setSelectedDepo(event.target.value);
     setUser((x) => ({ ...x, wareHouseNo: Number(event.target.value ?? 0) }));
   };
+  const updateFormValue = ({ updateType, value }) => {
+    setErrorMessage("");
+  };
   return (
     <>
       <InputText
-    type="text"
-    defaultValue={user.username}
-    updateType="user_name"
-    containerStyle="mt-4"
-    labelTitle="Kullanıcı Adı"
-    onChange={(e) => { setUser(x => ({ ...x, username: e.target.value ?? "" })) }} 
-/>
-
+        type="text"
+        defaultValue={""}
+        updateType="user_name"
+        containerStyle="mt-4"
+        labelTitle="Kullanıcı Adı"
+        onChange={(e) => {
+          setUser((x) => ({ ...x, username: e.target.value ?? "" }));
+        }}
+        updateFormValue={updateFormValue}
+      />
 
       <InputText
         type="text"
-        defaultValue={user.password}
+        defaultValue={""}
         updateType="user_password"
         containerStyle="mt-4"
         labelTitle="Şifreniz"
-        onChange={(e) => { setUser(x => ({ ...x, password: e.target.value ?? "" })) }}
+        onChange={(e) => {
+          setUser((x) => ({ ...x, password: e.target.value ?? "" }));
+        }}
+        updateFormValue={updateFormValue}
       />
 
       <div>
@@ -104,11 +87,9 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
           placeholder="Seçiniz"
           containerStyle="w-72"
           labelStyle="visible"
-          defaultValue="TODAY"
-          updateFormValue={updateFormValue}
         />
       </div>
-      <ErrorText styleClass="mt-16">{errorMessage}</ErrorText>
+      <ErrorText styleClass="mt-16">{"errorMessage"}</ErrorText>
       <div className="modal-action">
         <button className="btn btn-ghost" onClick={() => closeModal()}>
           Çık
@@ -124,4 +105,4 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
   );
 }
 
-export default AddLeadModalBody;
+export default AddUser;

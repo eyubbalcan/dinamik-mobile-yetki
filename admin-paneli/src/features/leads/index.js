@@ -1,42 +1,23 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import TitleCard from "../../components/Cards/TitleCard";
-import { openModal } from "../common/modalSlice";
 import { getLeadsContent } from "./leadSlice";
-import { MODAL_BODY_TYPES } from "../../utils/globalConstantUtil";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
-const TopSideButtons = () => {
-  const dispatch = useDispatch();
-
-  const openAddNewLeadModal = () => {
-    dispatch(
-      openModal({
-        title: "Kullanıcı Ekle",
-        bodyType: MODAL_BODY_TYPES.LEAD_ADD_NEW,
-      })
-    );
-  };
-
-  return (
-    <div className="inline-block float-right">
-      <button
-        className="btn px-6 btn-sm normal-case btn-primary"
-        onClick={() => openAddNewLeadModal()}
-      >
-        Kullanıcı Ekle
-      </button>
-    </div>
-  );
-};
+import AddUser from "./components/AddUser";
+import { Modal } from "react-bootstrap";
 
 function Leads() {
-  const dispatch = useDispatch();
   const [data, setData] = useState([]);
+  const [show, setShow] = useState(false);
+  const [newUser, setNewUser] = useState({
+    username: "",
+    password: "",
+    isActive: true,
+    warehouseNo: 0,
+  });
 
   useEffect(() => {
-    dispatch(getLeadsContent());
     fetchData();
   }, []);
 
@@ -48,13 +29,28 @@ function Leads() {
       console.error("Error fetching data:", error);
     }
   };
+  const handleClose = () => setShow(false);
+  const openAddUserModal = () => {
+    setShow(true);
+    setNewUser({ username: "", password: "", isActive: true, wareHouseNo: 0 });
+  };
 
   return (
     <>
+      <div className="main-title home-wrapper">
+        <div></div>
+      </div>
       <TitleCard
-        title="Current Leads"
+        title="Kullanıcılar"
         topMargin="mt-2"
-        TopSideButtons={<TopSideButtons />}
+        TopSideButtons={
+          <button
+            onClick={openAddUserModal}
+            className="btn px-6 btn-sm normal-case btn-primary"
+          >
+            Ekle
+          </button>
+        }
       >
         {/* Leads List in table format loaded from slice after api call */}
         <div className="overflow-x-auto w-full">
@@ -88,6 +84,12 @@ function Leads() {
           </table>
         </div>
       </TitleCard>
+      <div className={`modal ${show ? "modal-open" : ""}`}>
+        <div className={`modal-box  ${data === "lg" ? "max-w-5xl" : ""}`}>
+        <h1 className="  text-center text-2xl sm:text-3xl ">Yeni Kullanıcı</h1>
+          <AddUser user={newUser} setUser={setNewUser} />
+        </div>
+      </div>
     </>
   );
 }
