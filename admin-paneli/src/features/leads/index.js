@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import TitleCard from "../../components/Cards/TitleCard";
-import { getLeadsContent } from "./leadSlice";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import AddUser from "./components/AddUser";
-import { Modal } from "react-bootstrap";
 
 function Leads() {
   const [data, setData] = useState([]);
   const [show, setShow] = useState(false);
   const [newUser, setNewUser] = useState({
+    id: 0,
     username: "",
-    password: "",
     isActive: true,
     warehouseNo: 0,
   });
@@ -23,7 +20,10 @@ function Leads() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://192.168.1.40:5143/api/AuthUser");
+      const response = await axios.get(
+        "http://localhost:5145/api/AuthUser/GetUsers"
+      );
+      console.log(response.data);
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -32,7 +32,12 @@ function Leads() {
   const handleClose = () => setShow(false);
   const openAddUserModal = () => {
     setShow(true);
-    setNewUser({ username: "", password: "", isActive: true, wareHouseNo: 0 });
+    setNewUser({
+      id: 0,
+      username: "",
+      isActive: true,
+      wareHouseNo: 0,
+    });
   };
 
   return (
@@ -71,10 +76,11 @@ function Leads() {
                     </td>
                     <td>{l.isActive}</td>
                     <td>
-                      <Link to="/app/authority">
-                        <button className="btn px-6 btn-sm normal-case btn-primary">
-                          Düzenle
-                        </button>
+                      <Link
+                        className="btn px-6 btn-sm normal-case btn-primary"
+                        to={`/app/authority/${l.id}`}
+                      >
+                        Düzenle
                       </Link>
                     </td>
                   </tr>
@@ -86,8 +92,14 @@ function Leads() {
       </TitleCard>
       <div className={`modal ${show ? "modal-open" : ""}`}>
         <div className={`modal-box  ${data === "lg" ? "max-w-5xl" : ""}`}>
-        <h1 className="  text-center text-2xl sm:text-3xl ">Yeni Kullanıcı</h1>
-          <AddUser user={newUser} setUser={setNewUser} />
+          <h1 className="  text-center text-2xl sm:text-3xl ">
+            Yeni Kullanıcı
+          </h1>
+          <AddUser
+            user={newUser}
+            setUser={setNewUser}
+            handleClose={handleClose}
+          />
         </div>
       </div>
     </>

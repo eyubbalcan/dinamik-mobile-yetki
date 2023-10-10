@@ -20,7 +20,7 @@ function Header() {
   const [data, setData] = useState([]);
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://192.168.1.40:5143/api/Firma");
+      const response = await axios.get("http://localhost:5145/api/Firma");
       setData(response.data);
     } catch (erorr) {
       console.error("Error fetching data:", erorr);
@@ -131,7 +131,10 @@ function Header() {
           <div className="dropdown dropdown-end ml-4">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <button className="btn px-2 btn-sm normal-case btn-primary" alt="profile" />
+                <button
+                  className="btn px-2 btn-sm normal-case btn-primary"
+                  alt="profile"
+                />
               </div>
             </label>
             <ul

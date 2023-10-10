@@ -1,73 +1,73 @@
 // All components mapping with path for internal routes
 
-import { lazy } from 'react'
+import { lazy } from "react";
 
-const Dashboard = lazy(() => import('../pages/protected/Dashboard'))
-const Welcome = lazy(() => import('../pages/protected/Welcome'))
-const Page404 = lazy(() => import('../pages/protected/404'))
-const Blank = lazy(() => import('../pages/protected/Blank'))
-const Charts = lazy(() => import('../pages/protected/Charts'))
-const Leads = lazy(() => import('../pages/protected/Leads'))
-const Bills = lazy(() => import('../pages/protected/Bills'))
-const ProfileSettings = lazy(() => import('../pages/protected/ProfileSettings'))
-const GettingStarted = lazy(() => import('../pages/GettingStarted'))
-const DocFeatures = lazy(() => import('../pages/DocFeatures'))
-const DocComponents = lazy(() => import('../pages/DocComponents'))
-const Authority = lazy(() => import('../pages/protected/Authority'))
-
-
+const Dashboard = lazy(() => import("../pages/protected/Dashboard"));
+const Welcome = lazy(() => import("../pages/protected/Welcome"));
+const Page404 = lazy(() => import("../pages/protected/404"));
+const Blank = lazy(() => import("../pages/protected/Blank"));
+const Charts = lazy(() => import("../pages/protected/Charts"));
+const Leads = lazy(() => import("../pages/protected/Leads"));
+const Bills = lazy(() => import("../pages/protected/Bills"));
+const ProfileSettings = lazy(() =>
+  import("../pages/protected/ProfileSettings")
+);
+const GettingStarted = lazy(() => import("../pages/GettingStarted"));
+const DocFeatures = lazy(() => import("../pages/DocFeatures"));
+const DocComponents = lazy(() => import("../pages/DocComponents"));
+const Authority = lazy(() => import("../pages/protected/Authority"));
 
 const routes = [
   {
-    path: '/dashboard', // the url
+    path: "/dashboard", // the url
     component: Dashboard, // view rendered
   },
   {
-    path: '/welcome', // the url
+    path: "/welcome", // the url
     component: Welcome, // view rendered
   },
   {
-    path: '/leads',
+    path: "/leads",
     component: Leads,
   },
   {
-    path: '/authority',
+    path: "/authority/:id",
     component: Authority,
   },
 
   {
-    path: '/settings-profile',
+    path: "/settings-profile",
     component: ProfileSettings,
   },
   {
-    path: '/settings-billing',
+    path: "/settings-billing",
     component: Bills,
   },
   {
-    path: '/getting-started',
+    path: "/getting-started",
     component: GettingStarted,
   },
   {
-    path: '/features',
+    path: "/features",
     component: DocFeatures,
   },
   {
-    path: '/components',
+    path: "/components",
     component: DocComponents,
   },
 
   {
-    path: '/charts',
+    path: "/charts",
     component: Charts,
   },
   {
-    path: '/404',
+    path: "/404",
     component: Page404,
   },
   {
-    path: '/blank',
+    path: "/blank",
     component: Blank,
   },
-]
+];
 
-export default routes
+export default routes;

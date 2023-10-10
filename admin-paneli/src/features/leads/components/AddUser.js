@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import InputText from "../../../components/Input/InputText";
-import ErrorText from "../../../components/Typography/ErrorText";
 import SelectBox from "../../../components/Input/SelectBox";
 import axios from "axios";
 
-function AddUser({ closeModal, user, setUser }) {
+function AddUser({ closeModal, user, setUser, handleClose }) {
   const [depolar, setDepolar] = useState([]);
   const [selectedDepo, setSelectedDepo] = useState(0);
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -15,9 +13,7 @@ function AddUser({ closeModal, user, setUser }) {
 
   const fetchData = async () => {
     try {
-      const depolarResponse = await axios.get(
-        "http://192.168.1.40:5143/api/Depo"
-      );
+      const depolarResponse = await axios.get("http://localhost:5145/api/Depo");
       const temp = depolarResponse.data.map((x) => ({
         value: x.dep_no,
         name: x.dep_adi,
@@ -29,8 +25,10 @@ function AddUser({ closeModal, user, setUser }) {
   };
 
   const handleAddPerson = () => {
+    console.log(user);
     axios
-      .post("http://192.168.1.40:5143/api/AuthUser", setUser)
+
+      .post("http://localhost:5145/api/AuthUser/GetUsers", user)
       .then((response) => {
         if (response.data.Status) {
           console.log("kaydedildi");
@@ -50,31 +48,25 @@ function AddUser({ closeModal, user, setUser }) {
     setUser((x) => ({ ...x, wareHouseNo: Number(event.target.value ?? 0) }));
   };
   const updateFormValue = ({ updateType, value }) => {
-    setErrorMessage("");
+    setUser((x) => ({ ...x, [updateType]: value }));
   };
   return (
     <>
       <InputText
         type="text"
         defaultValue={""}
-        updateType="user_name"
+        updateType="username"
         containerStyle="mt-4"
         labelTitle="Kullanıcı Adı"
-        onChange={(e) => {
-          setUser((x) => ({ ...x, username: e.target.value ?? "" }));
-        }}
         updateFormValue={updateFormValue}
       />
 
       <InputText
         type="text"
         defaultValue={""}
-        updateType="user_password"
+        updateType="password"
         containerStyle="mt-4"
         labelTitle="Şifreniz"
-        onChange={(e) => {
-          setUser((x) => ({ ...x, password: e.target.value ?? "" }));
-        }}
         updateFormValue={updateFormValue}
       />
 
@@ -85,18 +77,22 @@ function AddUser({ closeModal, user, setUser }) {
           options={depolar}
           labelTitle="Depo Seçiniz"
           placeholder="Seçiniz"
+          updateType="wareHouseNo"
           containerStyle="w-72"
           labelStyle="visible"
+          updateFormValue={updateFormValue}
         />
       </div>
-      <ErrorText styleClass="mt-16">{"errorMessage"}</ErrorText>
       <div className="modal-action">
-        <button className="btn btn-ghost" onClick={() => closeModal()}>
+        <button className="btn btn-ghost" onClick={() => handleClose()}>
           Çık
         </button>
         <button
           className="btn btn-primary px-6"
-          onClick={() => handleAddPerson()}
+          onClick={() => {
+            handleAddPerson();
+            handleClose();
+          }}
         >
           Kaydet
         </button>

@@ -8,6 +8,7 @@ function InternalPage(){
 
     useEffect(() => {
         dispatch(setPageTitle({ title : "Authority"}))
+        
       }, [])
 
 

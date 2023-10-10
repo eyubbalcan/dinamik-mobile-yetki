@@ -13,7 +13,7 @@ function Modul() {
   };
 
   const updateFormValue = ({ updateType, value }) => {
-    console.log(updateType);
+    // console.log(updateType);
   };
 
   return (
