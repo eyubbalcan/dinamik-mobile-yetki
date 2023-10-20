@@ -20,10 +20,12 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5143/api/AuthUser");
+      const response = await axios.get("http://192.168.1.40:5143/api/AuthUser");
       setData(response.data);
 
-      const depolarResponse = await axios.get("http://localhost:5143/api/Depo");
+      const depolarResponse = await axios.get(
+        "http://192.168.1.40:5143/api/Depo"
+      );
       const temp = depolarResponse.data.map((x) => ({
         value: x.dep_no,
         name: x.dep_adi,
@@ -48,7 +50,7 @@ function AddLeadModalBody({ closeModal, user, setUser }) {
 
   const handleAddPerson = () => {
     axios
-      .post("http://localhost:5143/api/AuthUser", newUser)
+      .post("http://192.168.1.40:5143/api/AuthUser", newUser)
       .then((response) => {
         if (response.data.Status) {
           console.log("kaydedildi");

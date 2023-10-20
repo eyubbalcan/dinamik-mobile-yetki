@@ -13,7 +13,7 @@ function AddUser({ closeModal, user, setUser, handleClose }) {
 
   const fetchData = async () => {
     try {
-      const depolarResponse = await axios.get("http://localhost:5145/api/Depo");
+      const depolarResponse = await axios.get("http://192.168.1.40:5139/api/Depo");
       const temp = depolarResponse.data.map((x) => ({
         value: x.dep_no,
         name: x.dep_adi,
@@ -28,7 +28,7 @@ function AddUser({ closeModal, user, setUser, handleClose }) {
     console.log(user);
     axios
 
-      .post("http://localhost:5145/api/AuthUser/GetUsers", user)
+      .post("http://192.168.1.40:5139/api/AuthUser/GetUsers", user)
       .then((response) => {
         if (response.data.Status) {
           console.log("kaydedildi");

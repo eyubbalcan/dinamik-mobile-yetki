@@ -1,11 +1,15 @@
 import { useDispatch } from "react-redux";
 import ToogleInput from "../../components/Input/ToogleInput";
 import TitleCard from "../../components/Cards/TitleCard";
-import InputText from "../../components/Input/InputText";
 import { showNotification } from "../../features/common/headerSlice";
+import axios from "axios";
+import { useState, useEffect, useMemo } from "react";
+import _ from "lodash";
 
-function Modul() {
+function Modul({ user }) {
   const dispatch = useDispatch();
+  const [claims, setClaims] = useState([]);
+  const [userClaims, setUserClaims] = useState([]);
 
   // Call API to update profile settings changes
   const updateProfile = () => {
@@ -13,111 +17,95 @@ function Modul() {
   };
 
   const updateFormValue = ({ updateType, value }) => {
-    // console.log(updateType);
+    console.log(updateType);
+    console.log(value);
   };
+
+  useEffect(() => {
+    fetchClaims();
+  }, []);
+
+  useEffect(() => {
+    if (claims.length > 0) {
+      fetchUserClaims();
+    }
+  }, [claims]);
+
+  const fetchClaims = async () => {
+    try {
+      const response = await axios.get(
+        "http://192.168.1.40:5139/api/AuthUser/GetAuthority"
+      );
+      setClaims(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const fetchUserClaims = async () => {
+    try {
+      // const response = await axios.get(
+      //   `http://192.168.1.40:5139/api/AuthUser/GetClaims/${user.id}`
+      // );
+      //["yetki1","yetki2","yetki3","yetki4"]
+
+      
+      setUserClaims(["StokKartlari"]);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const showSwitch = useMemo(() => {
+    if (claims.length > 0 && !_.isNil(userClaims)) {
+      return (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 bg-slate-100">
+            {claims.slice(1, 3).map((l, k) => (
+              <ToogleInput
+                key={k}
+                updateType={l.name}
+                labelTitle={l.description}
+                defaultValue={userClaims.includes(l.name)}
+                updateFormValue={updateFormValue}
+              />
+            ))}
+          </div>
+          <div className="divider"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 bg-slate-100">
+            {claims.slice(4, 10).map((l, k) => (
+              <ToogleInput
+                key={k}
+                updateType={l.name}
+                labelTitle={l.description}
+                defaultValue={false}
+                updateFormValue={updateFormValue}
+              />
+            ))}
+          </div>
+          <div className="divider"></div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 bg-slate-100">
+            {claims.slice(10, 15).map((l, k) => (
+              <ToogleInput
+                key={k}
+                updateType={l.name}
+                labelTitle={l.description}
+                defaultValue={false}
+                updateFormValue={updateFormValue}
+              />
+            ))}
+          </div>
+        </>
+      );
+    } else return <></>;
+  }, [userClaims, claims]);
 
   return (
     <>
       <TitleCard title="Modül Ayarları" topMargin="mt-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-300">
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Stok Kartları"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Cari Kartlar"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-    
-        </div>
-
+        {showSwitch}
         <div className="divider"></div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 bg-slate-300">
-        <ToogleInput
-            updateType="syncData"
-            labelTitle="Satış Siparişi"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Alış Spiarişi"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Satış İrsaliyesi"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Alış İrsaliyesi"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-        </div>
-        <div className="divider"></div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 bg-slate-300">
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Satış Faturası"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Alış Faturası"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Satış İade Faturası"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Toptan İade Çıkış İrsaliyesi"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-        </div>
-        <div className="divider"></div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 bg-slate-300">
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Sayım Sonuçları Giriş Fişi"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Depolar Arası Sevk Fişi"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Tekil Etiket Basımı"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-          <ToogleInput
-            updateType="syncData"
-            labelTitle="Toplu Etiket Basımı"
-            defaultValue={true}
-            updateFormValue={updateFormValue}
-          />
-        </div>
-
         <div className="mt-16">
           <button
             className="btn btn-primary float-right"

@@ -32,7 +32,7 @@ function Profile({ user }) {
             />
             <InputText
               labelTitle="Şifre"
-              defaultValue="123"
+              defaultValue=""
               type="password"
               updateFormValue={updateFormValue}
             />
@@ -52,7 +52,7 @@ function Profile({ user }) {
               placeholder="Seçiniz"
               containerStyle="w-80"
               labelStyle="visible"
-              defaultValue="TODAY"
+              defaultValue={user.wareHouseNo}
               updateFormValue={updateFormValue}
             />
           </div>

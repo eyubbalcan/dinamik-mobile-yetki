@@ -12,7 +12,7 @@ function Authority() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5145/api/AuthUser/GetUser/${id}`)
+    fetch(`http://192.168.1.40:5139/api/AuthUser/GetUser/${id}`)
       .then((res) => res.json())
       .then((data) => setUser(data));
   }, []);
@@ -30,7 +30,7 @@ function Authority() {
               <Profile user={user} />
             </TabPanel>
             <TabPanel>
-              <Modul />
+              <Modul user={user} />
             </TabPanel>
           </Tabs>
         </div>

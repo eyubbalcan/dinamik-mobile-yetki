@@ -20,7 +20,7 @@ function Header() {
   const [data, setData] = useState([]);
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5145/api/Firma");
+      const response = await axios.get("http://192.168.1.40:5139/api/Firma");
       setData(response.data);
     } catch (erorr) {
       console.error("Error fetching data:", erorr);
@@ -80,18 +80,6 @@ function Header() {
         </div>
 
         <div className="order-last">
-          {/* Multiple theme selection, uncomment this if you want to enable multiple themes selection, 
-                also includes corporate and retro themes in tailwind.config file */}
-
-          {/* <select className="select select-sm mr-4" data-choose-theme>
-                    <option disabled selected>Theme</option>
-                    <option value="light">Default</option>
-                    <option value="dark">Dark</option>
-                    <option value="corporate">Corporate</option>
-                    <option value="retro">Retro</option>
-                </select> */}
-
-          {/* Light and dark theme selection toogle **/}
           <label className="swap ">
             <input type="checkbox" />
             <SunIcon
