@@ -43,14 +43,14 @@ function Header() {
   }, []);
 
   // Opening right sidebar for notification
-  const openNotification = () => {
-    dispatch(
-      openRightDrawer({
-        header: "Notifications",
-        bodyType: RIGHT_DRAWER_TYPES.NOTIFICATION,
-      })
-    );
-  };
+  // const openNotification = () => {
+  //   dispatch(
+  //     openRightDrawer({
+  //       header: "Notifications",
+  //       bodyType: RIGHT_DRAWER_TYPES.NOTIFICATION,
+  //     })
+  //   );
+  // };
 
   return (
     <>
@@ -99,9 +99,9 @@ function Header() {
               }
             />
           </label>
-
+              {/* Bildirim için */}
           {/* Notification icon */}
-          <button
+          {/* <button
             className="btn btn-ghost ml-4  btn-circle"
             onClick={() => openNotification()}
           >
@@ -113,7 +113,7 @@ function Header() {
                 </span>
               ) : null}
             </div>
-          </button>
+          </button> */}
 
           {/* Profile icon, opening menu on click */}
           <div className="dropdown dropdown-end ml-4">

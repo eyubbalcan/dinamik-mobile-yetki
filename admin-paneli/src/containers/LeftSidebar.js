@@ -24,7 +24,7 @@ function LeftSidebar(){
 
                 <li className="mb-2 font-semibold text-xl">
                     
-                    <Link to={'/app/welcome'}><img className="mask mask-squircle w-10" src="/logo192.png" alt="Dinamik Logo"/>Dinamik Mobile Yetki</Link> </li>
+                    <Link to={'/app/welcome'}>Dinamik Mobile Yetki</Link> </li>
                 {
                     routes.map((route, k) => {
                         return(

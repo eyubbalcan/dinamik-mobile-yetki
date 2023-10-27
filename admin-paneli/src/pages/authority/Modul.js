@@ -11,16 +11,6 @@ function Modul({ user }) {
   const [claims, setClaims] = useState([]);
   const [userClaims, setUserClaims] = useState([]);
 
-  // Call API to update profile settings changes
-  const updateProfile = () => {
-    dispatch(showNotification({ message: "Profile Updated", status: 1 }));
-  };
-
-  const updateFormValue = ({ updateType, value }) => {
-    console.log(updateType);
-    console.log(value);
-  };
-
   useEffect(() => {
     fetchClaims();
   }, []);
@@ -29,6 +19,7 @@ function Modul({ user }) {
     if (claims.length > 0) {
       fetchUserClaims();
     }
+    // eslint-disable-next-line
   }, [claims]);
 
   const fetchClaims = async () => {
@@ -44,20 +35,47 @@ function Modul({ user }) {
 
   const fetchUserClaims = async () => {
     try {
-      // const response = await axios.get(
-      //   `http://192.168.1.40:5139/api/AuthUser/GetClaims/${user.id}`
-      // );
-      //["yetki1","yetki2","yetki3","yetki4"]
-
-      
-      setUserClaims(["StokKartlari"]);
+      const response = await axios.get(
+        `http://192.168.1.40:5139/api/AuthUser/GetClaims/${user.id}`
+      );
+      setUserClaims(response.data.Claims);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
+  const updateProfile = () => {
+    dispatch(showNotification({ message: "Profile Updated", status: 1 }));
+
+    axios
+      .post("http://192.168.1.40:5139/api/AuthUser/PostClaims", {
+        userId: user.id,
+        claims: userClaims,
+      })
+      .then((response) => {
+        if (response.data.Status) {
+          dispatch(showNotification({ message: "Eklendi", status: 1 }));
+        } else {
+          console.log(response.data.Mesaj);
+        }
+      })
+      .catch((error) => {
+        console.error("Veri gönderme hatası:", error);
+      });
+  };
+
+  const updateFormValue = ({ updateType, value }) => {
+    if (value && !userClaims.includes(updateType)) {
+      setUserClaims((x) => [...x, updateType]);
+    }
+    if (!value && userClaims.includes(updateType)) {
+      var newArray = userClaims.filter((x) => x !== updateType);
+      setUserClaims([...newArray]);
+    }
+  };
+
   const showSwitch = useMemo(() => {
-    if (claims.length > 0 && !_.isNil(userClaims)) {
+    if (claims.length > 0 && !_.isNil(userClaims) && _.isArray(userClaims)) {
       return (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 bg-slate-100">
@@ -78,7 +96,7 @@ function Modul({ user }) {
                 key={k}
                 updateType={l.name}
                 labelTitle={l.description}
-                defaultValue={false}
+                defaultValue={userClaims.includes(l.name)}
                 updateFormValue={updateFormValue}
               />
             ))}
@@ -89,9 +107,9 @@ function Modul({ user }) {
             {claims.slice(10, 15).map((l, k) => (
               <ToogleInput
                 key={k}
-                updateType={l.name}
+                updateType={l.name} 
                 labelTitle={l.description}
-                defaultValue={false}
+                defaultValue={userClaims.includes(l.name)}
                 updateFormValue={updateFormValue}
               />
             ))}
@@ -99,12 +117,13 @@ function Modul({ user }) {
         </>
       );
     } else return <></>;
-  }, [userClaims, claims]);
+    // eslint-disable-next-line
+  }, [userClaims]);
 
   return (
     <>
       <TitleCard title="Modül Ayarları" topMargin="mt-2">
-        {showSwitch}
+        {claims && showSwitch}
         <div className="divider"></div>
         <div className="mt-16">
           <button

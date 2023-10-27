@@ -9,7 +9,6 @@ import SelectBox from "../../components/Input/SelectBox";
 function Profile({ user }) {
   const dispatch = useDispatch();
   // const [dis, setDis] = useState([]);
-  console.log(1, user);
 
   // Call API to update profile settings changes
   const updateProfile = () => {

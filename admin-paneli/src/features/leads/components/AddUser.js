@@ -28,7 +28,7 @@ function AddUser({ closeModal, user, setUser, handleClose }) {
     console.log(user);
     axios
 
-      .post("http://192.168.1.40:5139/api/AuthUser/GetUsers", user)
+      .post("http://localhost:5139/api/AuthUser", user)
       .then((response) => {
         if (response.data.Status) {
           console.log("kaydedildi");
